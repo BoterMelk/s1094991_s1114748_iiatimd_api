@@ -1,6 +1,7 @@
 <?php
-
+//use App\Http\Controllers\RecipeController
 use Illuminate\Http\Request;
+use App\Http\Controllers\RecipeController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -15,10 +16,19 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/recipes', function (){
-    return 'recipe here';
-});
-
-Route::middleware('auth:api')->get('/user', function (Request $request) {
-    return $request->user();
-});
+//public routes
+//Route::get('/recipes', [RecipeController::class, 'index']);
+//Route::post('/recipes', [RecipeController::class, 'store']);
+//
+Route::resource('recipes', RecipeController::class);
+Route::get('/recipes/search/{name}', [RecipeController::class,'search']);
+//protected routes
+//Route::group(['middleware' => ['auth:sanctum']], function () {
+//    //hier gaan beschermde routes zoals favoriete recepten
+//});
+//
+//
+//
+//Route::middleware('auth:api')->get('/user', function (Request $request) {
+//    return $request->user();
+//});
