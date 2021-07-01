@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 use App\Models\Recipe;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Http;
 
 class RecipeController extends Controller
 {
@@ -13,8 +14,11 @@ class RecipeController extends Controller
      */
     public function index()
     {
-        return Recipe::all();
-        //laat alle recepten zien te vinden in Recipe.php
+        $response = Http::get('https://api.spoonacular.com/recipes/random?apiKey=799628c184dd4918b97bb1c76736e21f');
+
+        // hier code schrijven die het formaat aanpast en goed terug geeft wat je wilt
+
+        return $response;
     }
 
     /**
@@ -41,7 +45,29 @@ class RecipeController extends Controller
      */
     public function show($id)
     {
-        return Recipe::find($id);
+        $response = Http::get('https://api.spoonacular.com/recipes/' . $id . '/information?apiKey=799628c184dd4918b97bb1c76736e21f');
+        $recipe = $response->json();
+
+
+        $ingredients = array();
+        foreach($recipe['extendedIngredients'] as $ingredient){
+            $ingredients[] = [
+                'name' => $ingredient['name'],
+                'amount' => $ingredient['amount'],
+                'unit' => $ingredient['unit']
+            ];
+        }
+
+        $data = [
+            'title' => $recipe['title'],
+            'image' => 'https://spoonacular.com/recipeImages/' . $id . '-556x370.jpg',
+            'vegetarian' => $recipe['vegetarian'],
+            'summary' => strip_tags($recipe['summary']),
+            'ingredients' => $ingredients,
+            'instructions' => $recipe['instructions']
+        ];
+
+        return response()->json($data);
     }
 
     /**
