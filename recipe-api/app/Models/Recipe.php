@@ -13,4 +13,8 @@ class Recipe extends Model
         'ingredients',
         'description'
     ];
+
+    public function favourite(){
+        return $this->belongsTo(Favourites::class, 'name', 'recipe_name');
+    }
 }
