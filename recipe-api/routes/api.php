@@ -22,7 +22,6 @@ Route::post('/register', [AuthController::class, 'register']);
 Route::post('/login', [AuthController::class, 'login']);
 Route::get('/recipes', [RecipeController::class, 'index']);
 Route::get('/recipes/{id}', [RecipeController::class, 'show']);
-Route::get('/recipes/search/{name}', [RecipeController::class,'search']);
 
 //protected routes
 Route::group(['middleware' => ['auth:sanctum']], function () {
@@ -30,7 +29,7 @@ Route::group(['middleware' => ['auth:sanctum']], function () {
     Route::put('/recipes/{id}', [RecipeController::class, 'update']);
     Route::delete('/recipes/{id}', [RecipeController::class, 'destroy']);
     Route::post('/logout', [AuthController::class, 'logout']);
-    //hier gaan beschermde routes zoals favoriete recepten pagina
+    Route::get('/recipes/search/{name}', [RecipeController::class,'search']);
 });
 
 Route::middleware('auth:api')->get('/user', function (Request $request) {

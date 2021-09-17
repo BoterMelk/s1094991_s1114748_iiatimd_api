@@ -103,6 +103,8 @@ class RecipeController extends Controller
      */
     public function search($name)
     {
-        return Recipe::where('name', 'like', '%'.$name.'%')->get();
+        $response = Http::get('https://api.spoonacular.com/recipes/complexSearch?query=' . $name . '&apiKey=799628c184dd4918b97bb1c76736e21f');
+
+        return $response;
     }
 }
